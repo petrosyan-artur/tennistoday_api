@@ -1,0 +1,99 @@
+\CourtOffers:
+    type: entity
+    table: court_offers
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        companyName:
+            type: string
+            nullable: true
+            length: 50
+            options:
+                fixed: false
+            column: company_name
+        companySubName:
+            type: string
+            nullable: true
+            length: 50
+            options:
+                fixed: false
+            column: company_sub_name
+        courtName:
+            type: string
+            nullable: true
+            length: 50
+            options:
+                fixed: false
+            column: court_name
+        coverType:
+            type: string
+            nullable: true
+            length: null
+            options:
+                fixed: false
+            column: cover_type
+        surfaceType:
+            type: string
+            nullable: true
+            length: null
+            options:
+                fixed: false
+            column: surface_type
+        price:
+            type: decimal
+            nullable: true
+            precision: 15
+            scale: 5
+        status:
+            type: string
+            nullable: false
+            length: null
+            options:
+                fixed: false
+        startDate:
+            type: datetime
+            nullable: true
+            column: start_date
+        stopDate:
+            type: datetime
+            nullable: true
+            column: stop_date
+        countryIsoCode:
+            type: string
+            nullable: true
+            length: 2
+            options:
+                fixed: false
+            column: country_iso_code
+        state:
+            type: string
+            nullable: true
+            length: 50
+            options:
+                fixed: false
+        city:
+            type: string
+            nullable: true
+            length: 50
+            options:
+                fixed: false
+        street:
+            type: string
+            nullable: true
+            length: 50
+            options:
+                fixed: false
+        orderId:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
+            column: order_id
+    lifecycleCallbacks: {  }

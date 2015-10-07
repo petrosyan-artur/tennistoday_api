@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Tennis Today Administration</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="description" content=""/>
+    <meta name="keywords" content=""/>
+    <meta name="document-state" content="dynamic"/>
+    <meta name="Robots" content=""/>
+    <meta name="Revisit-after" content=""/>
+    <meta name="Copyright" content=""/>
+    <meta name="Basis" content=""/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+
+    {% block stylesheets %}
+        {% stylesheets filter='cssrewrite' output='css/main.css'
+        '@TTMainBundle/Resources/public/css/*.css'
+        %}
+        <link rel="stylesheet" href="{{ asset('bundles/ttmain/css/bootstrap.min.css') }}"/>
+        {#<link rel="stylesheet" href="{{ asset('bundles/ttmain/css/bootstrap-responsive.css') }}"/>#}
+        <link rel="stylesheet" href="{{ asset('bundles/ttmain/css/scrolling-nav.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('bundles/ttmain/css/jquery.simple-dtpicker.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('bundles/ttmain/css/style.css') }}"/>
+        {% endstylesheets %}
+    {% endblock %}
+</head>
+<body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top" data-twttr-rendered="true">
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation" style="display:block;">
+    <div class="container">
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            {#<a class="navbar-brand page-scroll" href="#page-top">Start Bootstrap</a>#}
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
+                <li>
+                    <a class="page-scroll" href="#page-top">Home</a>
+                </li>
+                <li>
+                    <a class="page-scroll" href="#court-offers">Court Offers</a>
+                </li>
+                <li>
+                    <a class="page-scroll" href="#footer">Footer</a>
+                </li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+{% block body %}
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript" src="{{ asset('bundles/ttmain/js/jquery.js') }}"></script>
+    {#<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>#}
+    <script type="text/javascript" src="{{ asset('bundles/ttmain/js/jquery.easing.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/ttmain/js/bootstrap.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/ttmain/js/scrolling-nav.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/ttmain/js/jquery.simple-dtpicker.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/ttmain/js/main.js') }}"></script>
+
+{% endblock %}
+<section id="footer" class="footer-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div style="display:block;width:100%;height:500px;"></div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

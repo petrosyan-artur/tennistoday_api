@@ -1,0 +1,51 @@
+.courts-section {
+     padding-top: 80px;
+     min-height: 500px;
+ }
+
+.court-offers-section {
+    padding-top: 80px;
+    min-height: 500px;
+}
+
+.companies-section, .update-companies-section {
+    padding-top: 80px;
+    min-height: 500px;
+}
+
+#courts_list td {
+    text-align:center;
+    vertical-align: middle;
+}
+
+.red_border {
+    border: 1px solid red;
+}
+
+.login_content {
+    margin: 100px auto;
+    padding: 30px;
+    width: 540px;
+    min-height: 400px;
+    display: block;
+    border-radius: 6px;
+    background: greenyellow;
+    background: url('../images/login_bg.jpg') no-repeat center center;
+    background-size: 100%;
+}
+.login_content_in {
+    width: 40%;
+    float:left;
+    display:block;
+}
+
+.login_content_in input {
+    width: 100%;
+    height: 30px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.select_status {
+    width: 100px;
+}

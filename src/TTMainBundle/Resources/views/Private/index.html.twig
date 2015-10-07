@@ -1,0 +1,36 @@
+{% extends 'TTMainBundle:Private:base.html.twig' %}
+{% block body %}
+    <div class="companies-section">
+        <div class="row">
+            <div class="container">
+                <h1>Companies List!</h1>
+                <table class="table table-striped table-bordered table-hover table-condensed" id="courts_list">
+                    <thead>
+                    <tr>
+                        <th>Company Name</th>
+                        {#<th>Courts Count</th>#}
+                        <th>Add Offer</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for c in companies %}
+                        <tr>
+                            <td>{{ c.getCompanyName() }}</td>
+                            {#<td>10</td>#}
+                            <td>
+                                <form action="/app_dev.php/login_check" method="POST" target="_blank">
+                                <div style="display:none;">
+                                    <input type="text" name="_username" value="{{ c.getUsername() }}">
+                                    <input type="text" name="_password" value="{{ c.getPassword() }}">
+                                </div>
+                                <button class="btn btn-success" type="submit">Add/View Offers</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

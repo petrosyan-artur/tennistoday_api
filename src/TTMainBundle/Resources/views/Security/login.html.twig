@@ -1,0 +1,21 @@
+{% extends 'TTMainBundle:Security:base.html.twig' %}
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="login_content">
+            <div class="login_content_in">
+            <form action="{{ path('login_check') }}" method="post">
+                {% if error %}
+                    <div style="color:red;margin-bottom:4px;">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                {% endif %}
+                <label for="username"></label>
+                <input type="text" id="username" placeholder="Username" name="_username" value="{{ last_username }}"/>
+                <label for="password"></label>
+                <input type="password" id="password" placeholder="Password" name="_password"/>
+                <button class="btn btn-info" type="submit">SIGN IN</button>
+            </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

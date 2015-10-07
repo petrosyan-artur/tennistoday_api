@@ -1,0 +1,4 @@
+tt_main_bundle:
+    resource: "@TTMainBundle/Controller"
+    type: annotation
+    prefix:  /

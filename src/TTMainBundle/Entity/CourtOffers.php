@@ -1,0 +1,500 @@
+<?php
+
+namespace TTMainBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * CourtOffers
+ *
+ * @ORM\Table(name="court_offers")
+ * @ORM\Entity(repositoryClass="TTMainBundle\Entity\Repository\CourtOffersRepository")
+ */
+class CourtOffers
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="court_id", type="integer", nullable=true)
+     */
+    private $courtId;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="company_name", type="string", length=50, nullable=true)
+     */
+    private $companyName;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="company_sub_name", type="string", length=50, nullable=true)
+     */
+    private $companySubName;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="court_name", type="string", length=50, nullable=true)
+     */
+    private $courtName;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="cover_type", type="string", nullable=true)
+     */
+    private $coverType;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="surface_type", type="string", nullable=true)
+     */
+    private $surfaceType;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="price", type="decimal", precision=15, scale=5, nullable=true)
+     */
+    private $price;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="status", type="string", nullable=false)
+     */
+    private $status;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="start_date", type="datetime", nullable=true)
+     */
+    private $startDate;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="stop_date", type="datetime", nullable=true)
+     */
+    private $stopDate;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="country_iso_code", type="string", length=2, nullable=true)
+     */
+    private $countryIsoCode;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="state", type="string", length=50, nullable=true)
+     */
+    private $state;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="city", type="string", length=50, nullable=true)
+     */
+    private $city;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="street", type="string", length=50, nullable=true)
+     */
+    private $street;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="order_id", type="integer", nullable=true)
+     */
+    private $orderId;
+
+
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set courtId
+     *
+     * @param integer $courtId
+     *
+     * @return CourtOffers
+     */
+    public function setCourtId($courtId)
+    {
+        $this->courtId = $courtId;
+
+        return $this;
+    }
+
+    /**
+     * Get courtId
+     *
+     * @return integer
+     */
+    public function getCourtId()
+    {
+        return $this->courtId;
+    }
+
+    /**
+     * Set companyName
+     *
+     * @param string $companyName
+     *
+     * @return CourtOffers
+     */
+    public function setCompanyName($companyName)
+    {
+        $this->companyName = $companyName;
+
+        return $this;
+    }
+
+    /**
+     * Get companyName
+     *
+     * @return string
+     */
+    public function getCompanyName()
+    {
+        return $this->companyName;
+    }
+
+    /**
+     * Set companySubName
+     *
+     * @param string $companySubName
+     *
+     * @return CourtOffers
+     */
+    public function setCompanySubName($companySubName)
+    {
+        $this->companySubName = $companySubName;
+
+        return $this;
+    }
+
+    /**
+     * Get companySubName
+     *
+     * @return string
+     */
+    public function getCompanySubName()
+    {
+        return $this->companySubName;
+    }
+
+    /**
+     * Set courtName
+     *
+     * @param string $courtName
+     *
+     * @return CourtOffers
+     */
+    public function setCourtName($courtName)
+    {
+        $this->courtName = $courtName;
+
+        return $this;
+    }
+
+    /**
+     * Get courtName
+     *
+     * @return string
+     */
+    public function getCourtName()
+    {
+        return $this->courtName;
+    }
+
+    /**
+     * Set coverType
+     *
+     * @param string $coverType
+     *
+     * @return CourtOffers
+     */
+    public function setCoverType($coverType)
+    {
+        $this->coverType = $coverType;
+
+        return $this;
+    }
+
+    /**
+     * Get coverType
+     *
+     * @return string
+     */
+    public function getCoverType()
+    {
+        return $this->coverType;
+    }
+
+    /**
+     * Set surfaceType
+     *
+     * @param string $surfaceType
+     *
+     * @return CourtOffers
+     */
+    public function setSurfaceType($surfaceType)
+    {
+        $this->surfaceType = $surfaceType;
+
+        return $this;
+    }
+
+    /**
+     * Get surfaceType
+     *
+     * @return string
+     */
+    public function getSurfaceType()
+    {
+        return $this->surfaceType;
+    }
+
+    /**
+     * Set price
+     *
+     * @param string $price
+     *
+     * @return CourtOffers
+     */
+    public function setPrice($price)
+    {
+        $this->price = $price;
+
+        return $this;
+    }
+
+    /**
+     * Get price
+     *
+     * @return string
+     */
+    public function getPrice()
+    {
+        return $this->price;
+    }
+
+    /**
+     * Set status
+     *
+     * @param string $status
+     *
+     * @return CourtOffers
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * Get status
+     *
+     * @return string
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * Set startDate
+     *
+     * @param \DateTime $startDate
+     *
+     * @return CourtOffers
+     */
+    public function setStartDate($startDate)
+    {
+        $this->startDate = $startDate;
+
+        return $this;
+    }
+
+    /**
+     * Get startDate
+     *
+     * @return \DateTime
+     */
+    public function getStartDate()
+    {
+        return $this->startDate;
+    }
+
+    /**
+     * Set stopDate
+     *
+     * @param \DateTime $stopDate
+     *
+     * @return CourtOffers
+     */
+    public function setStopDate($stopDate)
+    {
+        $this->stopDate = $stopDate;
+
+        return $this;
+    }
+
+    /**
+     * Get stopDate
+     *
+     * @return \DateTime
+     */
+    public function getStopDate()
+    {
+        return $this->stopDate;
+    }
+
+    /**
+     * Set countryIsoCode
+     *
+     * @param string $countryIsoCode
+     *
+     * @return CourtOffers
+     */
+    public function setCountryIsoCode($countryIsoCode)
+    {
+        $this->countryIsoCode = $countryIsoCode;
+
+        return $this;
+    }
+
+    /**
+     * Get countryIsoCode
+     *
+     * @return string
+     */
+    public function getCountryIsoCode()
+    {
+        return $this->countryIsoCode;
+    }
+
+    /**
+     * Set state
+     *
+     * @param string $state
+     *
+     * @return CourtOffers
+     */
+    public function setState($state)
+    {
+        $this->state = $state;
+
+        return $this;
+    }
+
+    /**
+     * Get state
+     *
+     * @return string
+     */
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    /**
+     * Set city
+     *
+     * @param string $city
+     *
+     * @return CourtOffers
+     */
+    public function setCity($city)
+    {
+        $this->city = $city;
+
+        return $this;
+    }
+
+    /**
+     * Get city
+     *
+     * @return string
+     */
+    public function getCity()
+    {
+        return $this->city;
+    }
+
+    /**
+     * Set street
+     *
+     * @param string $street
+     *
+     * @return CourtOffers
+     */
+    public function setStreet($street)
+    {
+        $this->street = $street;
+
+        return $this;
+    }
+
+    /**
+     * Get street
+     *
+     * @return string
+     */
+    public function getStreet()
+    {
+        return $this->street;
+    }
+
+    /**
+     * Set orderId
+     *
+     * @param integer $orderId
+     *
+     * @return CourtOffers
+     */
+    public function setOrderId($orderId)
+    {
+        $this->orderId = $orderId;
+
+        return $this;
+    }
+
+    /**
+     * Get orderId
+     *
+     * @return integer
+     */
+    public function getOrderId()
+    {
+        return $this->orderId;
+    }
+}

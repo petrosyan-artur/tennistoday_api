@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Tennis Today Administration</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="description" content=""/>
+    <meta name="keywords" content=""/>
+    <meta name="document-state" content="dynamic"/>
+    <meta name="Robots" content=""/>
+    <meta name="Revisit-after" content=""/>
+    <meta name="Copyright" content=""/>
+    <meta name="Basis" content=""/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+
+    {% block stylesheets %}
+        {% stylesheets filter='cssrewrite' output='css/main.css'
+        '@TTMainBundle/Resources/public/css/*.css'
+        %}
+        <link rel="stylesheet" href="{{ asset('bundles/ttmain/css/bootstrap.min.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('bundles/ttmain/css/style.css') }}"/>
+        {% endstylesheets %}
+    {% endblock %}
+</head>
+<body>
+{% block body %}
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript" src="{{ asset('bundles/ttmain/js/jquery.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/ttmain/js/bootstrap.min.js') }}"></script>
+{% endblock %}
+</body>
+</html>

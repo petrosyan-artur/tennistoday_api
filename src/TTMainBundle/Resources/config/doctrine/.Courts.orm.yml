@@ -1,0 +1,74 @@
+\Courts:
+    type: entity
+    table: courts
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        companyName:
+            type: string
+            nullable: true
+            length: 50
+            options:
+                fixed: false
+            column: company_name
+        courtName:
+            type: string
+            nullable: true
+            length: 50
+            options:
+                fixed: false
+            column: court_name
+        companySubName:
+            type: string
+            nullable: true
+            length: 50
+            options:
+                fixed: false
+            column: company_sub_name
+        countryIsoCode:
+            type: string
+            nullable: true
+            length: 2
+            options:
+                fixed: false
+            column: country_iso_code
+        state:
+            type: string
+            nullable: true
+            length: 50
+            options:
+                fixed: false
+        city:
+            type: string
+            nullable: true
+            length: 50
+            options:
+                fixed: false
+        street:
+            type: string
+            nullable: true
+            length: 50
+            options:
+                fixed: false
+        coverType:
+            type: string
+            nullable: true
+            length: null
+            options:
+                fixed: false
+            column: cover_type
+        surfaceType:
+            type: string
+            nullable: true
+            length: null
+            options:
+                fixed: false
+            column: surface_type
+    lifecycleCallbacks: {  }
