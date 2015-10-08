@@ -28,4 +28,26 @@ class CourtsRepository extends EntityRepository
         return $companies;
     }
 
+    public function updateCourts($id, $companySubName, $surfaceType, $coverType, $countryIsoCode, $state, $city, $street)
+    {
+        $em = $this->getEntityManager();
+        $co = $em->getRepository('TTMainBundle:Courts')->findOneById($id);
+
+        if (!$co) {
+            return false;
+        }
+
+        $co->setCompanySubName($companySubName);
+        $co->setSurfaceType($surfaceType);
+        $co->setCoverType($coverType);
+        $co->setCountryIsoCode($countryIsoCode);
+        $co->setState($state);
+        $co->setCity($city);
+        $co->setStreet($street);
+
+        $em->persist($co);
+        $em->flush();
+
+        return true;
+    }
 }

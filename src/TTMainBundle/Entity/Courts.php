@@ -26,21 +26,21 @@ class Courts
     /**
      * @var string
      *
-     * @ORM\Column(name="company_name", type="string", length=50, nullable=true)
+     * @ORM\Column(name="company_name", type="string", length=50, nullable=true, unique=true)
      */
     private $companyName;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="court_name", type="string", length=50, nullable=true)
+     * @ORM\Column(name="court_name", type="string", length=50, nullable=true, unique=true)
      */
     private $courtName;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="company_sub_name", type="string", length=50, nullable=true)
+     * @ORM\Column(name="company_sub_name", type="string", length=50, nullable=true, unique=true)
      */
     private $companySubName;
 
@@ -89,12 +89,16 @@ class Courts
     /**
      * @var string
      *
-     * @ORM\Column(name="file_path", type="string", length=255, nullable=true)
+     * @ORM\Column(name="file_name", type="string", length=255, nullable=true)
      */
-    public $filePath;
+    public $fileName;
 
     /**
-     * @Assert\File(maxSize="6000000")
+     * @Assert\File(
+     *     maxSize = "4096k",
+     *     mimeTypes = {"image/jpeg", "image/png"},
+     *     mimeTypesMessage = "Please upload a valid Image (.jpg, .png)"
+     * )
      */
     private $file;
 
@@ -325,32 +329,32 @@ class Courts
         return $this->surfaceType;
     }
 
-    public function getAbsolutePath()
-    {
-        return null === $this->filePath
-            ? null
-            : $this->getUploadRootDir().'/'.$this->filePath;
-    }
-
-    public function getWebPath()
-    {
-        return null === $this->filePath
-            ? null
-            : $this->getUploadDir().'/'.$this->filePath;
-    }
+//    public function getAbsolutePath()
+//    {
+//        return null === $this->filePath
+//            ? null
+//            : $this->getUploadRootDir().'/'.$this->filePath;
+//    }
+//
+//    public function getWebPath()
+//    {
+//        return null === $this->filePath
+//            ? null
+//            : $this->getUploadDir().'/'.$this->filePath;
+//    }
 
     protected function getUploadRootDir()
     {
         // the absolute directory path where uploaded
         // documents should be saved
-        return __DIR__.'/../../../../web/'.$this->getUploadDir();
+        return __DIR__.'/../../../'.$this->getUploadDir();
     }
 
     protected function getUploadDir()
     {
         // get rid of the __DIR__ so it doesn't screw up
         // when displaying uploaded doc/image in the view.
-        return 'uploads/documents';
+        return 'images';
     }
 
     /**
@@ -373,6 +377,28 @@ class Courts
         return $this->file;
     }
 
+    /**
+     * Sets fileName.
+     *
+     * @param string $fileName
+     *
+     * @return Courts
+     */
+    public function setFileName()
+    {
+        $this->fileName = $this->courtName;
+    }
+
+    /**
+     * Get file.
+     *
+     * @return string
+     */
+    public function getFileName()
+    {
+        return $this->fileName;
+    }
+
     public function upload()
     {
         // the file property can be empty if the field is not required
@@ -391,7 +417,7 @@ class Courts
         );
 
         // set the path property to the filename where you've saved the file
-        $this->filePath = $this->getFile()->getClientOriginalName();
+        $this->fileName = $this->getFile()->getClientOriginalName();
 
         // clean up the file property as you won't need it anymore
         $this->file = null;

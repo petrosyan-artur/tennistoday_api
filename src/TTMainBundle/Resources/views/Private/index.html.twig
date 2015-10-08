@@ -10,6 +10,7 @@
                         <th>Company Name</th>
                         {#<th>Courts Count</th>#}
                         <th>Add Offer</th>
+                        <th>Edit Company</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -26,11 +27,33 @@
                                 <button class="btn btn-success" type="submit">Add/View Offers</button>
                                 </form>
                             </td>
+                            <td>
+                                <form action="/app_dev.php/login_check" method="POST" target="_blank">
+                                    <div style="display:none;">
+                                        <input type="text" name="_username" value="{{ c.getUsername() }}">
+                                        <input type="text" name="_password" value="{{ c.getPassword() }}">
+                                    </div>
+                                    <button class="btn btn-danger" type="submit">Edit Company</button>
+                                </form>
+                            </td>
                         </tr>
                     {% endfor %}
                     </tbody>
                 </table>
             </div>
         </div>
+    </div>
+    <div class="add-company-section">
+        <div class="row">
+            <div class="container">
+                <h1>Add New Company</h1>
+                 <div>
+                     <input type="text" id="username" name="username" placeholder="Username" value="" data-toggle="tooltip" data-trigger="manual" data-placement="bottom" title="Field can't be empty!">
+                     <input type="password" id="password" name="password" placeholder="Password" value="" data-toggle="tooltip" data-trigger="manual" data-placement="bottom" title="Field can't be empty!">
+                     <input type="text" id="companyName" name="companyName" placeholder="Company Name" value="" data-toggle="tooltip" data-trigger="manual" data-placement="bottom" title="Field can't be empty!">
+                 </div>
+                 <br/>
+                 <button class="btn btn-info" id="addNewCompany">Add New Company</button>
+            </div>
     </div>
 {% endblock %}

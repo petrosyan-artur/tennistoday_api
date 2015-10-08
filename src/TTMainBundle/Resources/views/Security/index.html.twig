@@ -44,6 +44,24 @@
             </div>
         </div>
     </div>
+    <div class="modal in" id="courtImages" role="dialog" tabindex="-1" aria-hidden="false" style="display: none">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h3>Update Court Images</h3>
+                </div>
+                <div class="modal-body">
+                    <div id="courtImagesBody">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    {#<button class="btn btn-info" id="updateCourtImages">Update Images</button>#}
+                    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="courts-section">
         <div class="row">
             <div class="container">
@@ -158,6 +176,211 @@
                     {% endfor %}
                     </tbody>
                 </table>
+            </div>
+        </div>
+    </div>
+    <div class="edit-courts-section" id="edit-courts">
+        <div class="row">
+            <div class="container">
+                <h1>Add/Edit Courts</h1>
+                <h3>Edit Courts</h3>
+                <table class="table table-striped table-bordered table-hover table-condensed">
+                    <thead>
+                    <tr>
+                        <th>Company Sub Name</th>
+                        <th>Court Name</th>
+                        <th>Surface Type</th>
+                        <th>Cover Type</th>
+                        <th>Country</th>
+                        <th>State</th>
+                        <th>City</th>
+                        <th>Street</th>
+                        <th>Update</th>
+                        <th>Edit Images</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for c in courts %}
+                        <tr>
+                            <td>
+                                <select name="company_sub_name_{{ c.getId() }}" id="company_sub_name_{{ c.getId() }}" class="select_status">
+                                    {% for sub in subComps %}
+                                        <option value="{{ sub }}"
+                                                {%  if sub == c.getCompanySubName() %}selected="selected"{% endif %}>{{ sub }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </td>
+                            <td>{{ c.getCourtName() }}</td>
+                            <td>
+                                <select name="surface_type_{{ c.getId() }}" id="surface_type_{{ c.getId() }}" class="select_status">
+                                    {% for st in surfaceTypeList %}
+                                        <option value="{{ st['name'] }}"
+                                                {%  if st['name'] == c.getSurfaceType() %}selected="selected"{% endif %}>{{ st['name'] }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </td>
+                            <td>
+                                <select name="cover_type_{{ c.getId() }}" id="cover_type_{{ c.getId() }}" class="select_status">
+                                    {% for st in coverTypeList %}
+                                        <option value="{{ st['name'] }}"
+                                                {%  if st['name'] == c.getCoverType() %}selected="selected"{% endif %}>{{ st['name'] }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </td>
+                            <td>
+                                <select name="country_iso_code_{{ c.getId() }}" id="country_iso_code_{{ c.getId() }}" style="width:50px;">
+                                    {% for st in countryIsoCode %}
+                                        <option value="{{ st['name'] }}"
+                                                {%  if st['name'] == c.getCountryIsoCode() %}selected="selected"{% endif %}>{{ st['name'] }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </td>
+                            <td>
+                                <input type="text" size="6" id="state_{{ c.getId() }}" value="{{ c.getState() }}" data-toggle="tooltip" data-trigger="manual" data-placement="bottom" title="Field can't be empty!">
+                            </td>
+                            <td>
+                                <input type="text" size="6" id="city_{{ c.getId() }}" value="{{ c.getCity() }}" data-toggle="tooltip" data-trigger="manual" data-placement="bottom" title="Field can't be empty!">
+                            </td>
+                            <td>
+                                <input type="text" size="15" id="street_{{ c.getId() }}" value="{{ c.getStreet() }}" data-toggle="tooltip" data-trigger="manual" data-placement="bottom" title="Field can't be empty!">
+                            </td>
+                            <td>
+                                <button class="btn btn-info" onclick="updateCourts({{ c.getId() }})">Update</button>
+                            </td>
+                            <td>
+                                <button class="btn btn-success" onclick="openCourtImagesModal('{{ c.getId() }}', '{{ c.getCourtName() }}')">Edit Images</button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <h3>Add New Court</h3>
+                <table class="table table-striped table-bordered table-hover table-condensed">
+                    <thead>
+                    <tr>
+                        <th>Company Sub Name</th>
+                        <th>Court Name</th>
+                        <th>Surface Type</th>
+                        <th>Cover Type</th>
+                        <th>Country</th>
+                        <th>State</th>
+                        <th>City</th>
+                        <th>Street</th>
+                        <th>Submit</th>
+                        <th>Add Images</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <select name="company_sub_name" id="company_sub_name" class="select_status">
+                                    {% for sub in subComps %}
+                                        <option value="{{ sub }}">
+                                            {{ sub }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </td>
+                            <td>
+                                <input type="text" size="15" id="court_name" placeholder="Court Name" value="" data-toggle="tooltip" data-trigger="manual" data-placement="bottom" title="Field can't be empty!">
+                            </td>
+                            <td>
+                                <select name="surface_type" id="surface_type" class="select_status">
+                                    {% for st in surfaceTypeList %}
+                                        <option value="{{ st['name'] }}">
+                                            {{ st['name'] }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </td>
+                            <td>
+                                <select name="cover_type" id="cover_type" class="select_status">
+                                    {% for st in coverTypeList %}
+                                        <option value="{{ st['name'] }}">
+                                            {{ st['name'] }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </td>
+                            <td>
+                                <select name="country_iso_code" id="country_iso_code" style="width:50px;">
+                                    {% for st in countryIsoCode %}
+                                        <option value="{{ st['name'] }}">
+                                            {{ st['name'] }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </td>
+                            <td>
+                                <input type="text" size="6" id="state" placeholder="State" value="" data-toggle="tooltip" data-trigger="manual" data-placement="bottom" title="Field can't be empty!">
+                            </td>
+                            <td>
+                                <input type="text" size="6" id="city" placeholder="City" value="" data-toggle="tooltip" data-trigger="manual" data-placement="bottom" title="Field can't be empty!">
+                            </td>
+                            <td>
+                                <input type="text" size="15" id="street" placeholder="Street" value="" data-toggle="tooltip" data-trigger="manual" data-placement="bottom" title="Field can't be empty!">
+                            </td>
+                            <td>
+                                <button class="btn btn-info" id="addNewCourt">Submit</button>
+                            </td>
+                            <td>
+                                <button class="btn btn-success" onclick="openCourtImagesModal('id', 'courtName')">Edit Images</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h3>Add New SubCompany</h3>
+                <table class="table table-striped table-bordered table-hover table-condensed">
+                    <thead>
+                    <tr>
+                        <th>Company Sub Name</th>
+                        <th>Country</th>
+                        <th>State</th>
+                        <th>City</th>
+                        <th>Street</th>
+                        <th>Submit</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <input type="text" size="15" id="company_sub_name" placeholder="SubCompany Name" value="" data-toggle="tooltip" data-trigger="manual" data-placement="bottom" title="Field can't be empty!">
+                        </td>
+                        <td>
+                            <select name="country_iso_code" id="country_iso_code" style="width:50px;">
+                                {% for st in countryIsoCode %}
+                                    <option value="{{ st['name'] }}">
+                                        {{ st['name'] }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                        <td>
+                            <input type="text" size="6" id="state" placeholder="State" value="" data-toggle="tooltip" data-trigger="manual" data-placement="bottom" title="Field can't be empty!">
+                        </td>
+                        <td>
+                            <input type="text" size="6" id="city" placeholder="City" value="" data-toggle="tooltip" data-trigger="manual" data-placement="bottom" title="Field can't be empty!">
+                        </td>
+                        <td>
+                            <input type="text" size="15" id="street" placeholder="Street" value="" data-toggle="tooltip" data-trigger="manual" data-placement="bottom" title="Field can't be empty!">
+                        </td>
+                        <td>
+                            <button class="btn btn-info" id="addNewSubCategory">Submit</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="billing-section" id="billing">
+        <div class="row">
+            <div class="container">
+                <h1>Billing</h1>
             </div>
         </div>
     </div>

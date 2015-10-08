@@ -8447,6 +8447,11 @@ of those sections to manage the look and feel of the site. */
     min-height: 500px;
 }
 
+.edit-courts-section, .billing-section {
+    padding-top: 80px;
+    min-height: 500px;
+}
+
 .companies-section, .update-companies-section {
     padding-top: 80px;
     min-height: 500px;

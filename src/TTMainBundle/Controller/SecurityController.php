@@ -71,12 +71,29 @@ class SecurityController extends Controller
             array('companyName' => $this->getUser()->getCompanyName()),
             array('startDate' => 'DESC')
         );
+        $subCompanies = $em->getRepository('TTMainBundle:SubCompanies')->findBy(
+            array('companyName' => $this->getUser()->getCompanyName())
+        );
+        $subComps = array();
+        foreach ($subCompanies as $sub) {
+            $subComps[] = $sub->getCompanySubName();
+        }
+
         $statusList = array(0 => array('name' => 'active'), 1 => array('name' => 'booked'), 2 => array('name' => 'completed'), 3 => array('name' => 'inactive'), 4 => array('name' => 'outdated'));
+        $coverTypeList = array(0 => array('name' => 'carpet'), 1 => array('name' => 'grass'), 2 => array('name' => 'clay'));
+        $surfaceTypeList = array(0 => array('name' => 'indoor'), 1 => array('name' => 'outdoor'));
+        $countryIsoCode = array(0 => array('name' => 'US'), 1 => array('name' => 'UK'));
+
 
         return $this->render('TTMainBundle:Security:index.html.twig', array(
                 'courts' => $courts,
                 'courtOffers' => $courtOffers,
-                'statusList' => $statusList
+                'subCompanies' => $subCompanies,
+                'subComps' => $subComps,
+                'statusList' => $statusList,
+                'coverTypeList' => $coverTypeList,
+                'surfaceTypeList' => $surfaceTypeList,
+                'countryIsoCode' => $countryIsoCode
             )
         );
     }

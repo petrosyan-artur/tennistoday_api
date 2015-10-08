@@ -9,6 +9,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use TTMainBundle\Entity\Courts;
 
 class DefaultController extends Controller
@@ -75,8 +77,7 @@ class DefaultController extends Controller
                     'Outdoor' => 'outdoor',
                 )
             ))
-//            ->add('filePath')
-//            ->add('file')
+            ->add('file')
             ->add('upload', 'submit')
             ->getForm();
 
@@ -85,7 +86,7 @@ class DefaultController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            var_dump($form['file']->getData());exit;
+//            var_dump($form['file']->getData());exit;
             $em = $this->getDoctrine()->getManager();
 
             $courts->upload();
@@ -93,7 +94,7 @@ class DefaultController extends Controller
             $em->persist($courts);
             $em->flush();
 
-            return $this->redirectToRoute('/');
+            return $this->redirectToRoute('test_file_upload', array(), 301);
         }
 
         return $this->render('TTMainBundle:Default:test.html.twig', array(
