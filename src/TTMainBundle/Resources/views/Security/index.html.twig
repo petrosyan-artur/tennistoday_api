@@ -342,16 +342,17 @@
                         <th>State</th>
                         <th>City</th>
                         <th>Street</th>
+                        <th>Phone Number</th>
                         <th>Submit</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr>
                         <td>
-                            <input type="text" size="15" id="company_sub_name" placeholder="SubCompany Name" value="" data-toggle="tooltip" data-trigger="manual" data-placement="bottom" title="Field can't be empty!">
+                            <input type="text" size="15" id="company_sub_name_s" placeholder="SubCompany Name" value="" data-toggle="tooltip" data-trigger="manual" data-placement="bottom" title="Field can't be empty!">
                         </td>
                         <td>
-                            <select name="country_iso_code" id="country_iso_code" style="width:50px;">
+                            <select name="country_iso_code_s" id="country_iso_code_s" style="width:50px;">
                                 {% for st in countryIsoCode %}
                                     <option value="{{ st['name'] }}">
                                         {{ st['name'] }}
@@ -360,16 +361,19 @@
                             </select>
                         </td>
                         <td>
-                            <input type="text" size="6" id="state" placeholder="State" value="" data-toggle="tooltip" data-trigger="manual" data-placement="bottom" title="Field can't be empty!">
+                            <input type="text" size="6" id="state_s" placeholder="State" value="" data-toggle="tooltip" data-trigger="manual" data-placement="bottom" title="Field can't be empty!">
                         </td>
                         <td>
-                            <input type="text" size="6" id="city" placeholder="City" value="" data-toggle="tooltip" data-trigger="manual" data-placement="bottom" title="Field can't be empty!">
+                            <input type="text" size="6" id="city_s" placeholder="City" value="" data-toggle="tooltip" data-trigger="manual" data-placement="bottom" title="Field can't be empty!">
                         </td>
                         <td>
-                            <input type="text" size="15" id="street" placeholder="Street" value="" data-toggle="tooltip" data-trigger="manual" data-placement="bottom" title="Field can't be empty!">
+                            <input type="text" size="15" id="street_s" placeholder="Street" value="" data-toggle="tooltip" data-trigger="manual" data-placement="bottom" title="Field can't be empty!">
                         </td>
                         <td>
-                            <button class="btn btn-info" id="addNewSubCategory">Submit</button>
+                            <input type="text" size="15" id="phone_number" placeholder="Phone Number" value="" data-toggle="tooltip" data-trigger="manual" data-placement="bottom" title="Field can't be empty!">
+                        </td>
+                        <td>
+                            <button class="btn btn-info" id="addNewSubCompany">Submit</button>
                         </td>
                     </tr>
                     </tbody>
@@ -383,5 +387,9 @@
                 <h1>Billing</h1>
             </div>
         </div>
+    </div>
+    <div style="display:none;position:absolute;left:10000px;top:10000px">
+        <div id="companyName">{{ companyName }}</div>
+        <div id="hash">{{ hash }}</div>
     </div>
 {% endblock %}

@@ -50,4 +50,31 @@ class CourtsRepository extends EntityRepository
 
         return true;
     }
+
+    public function addNewCourt($companyName, $companySubName, $courtName, $surfaceType, $coverType, $country, $state, $city, $street)
+    {
+        $em = $this->getEntityManager();
+        $co = $em->getRepository('TTMainBundle:Courts')->findOneByCourtName($courtName);
+
+        if ($co) {
+            return false;
+        }
+
+        $court = new Courts();
+
+        $court->setCompanyName($companyName);
+        $court->setCompanySubName($companySubName);
+        $court->setCourtName($courtName);
+        $court->setSurfaceType($surfaceType);
+        $court->setCoverType($coverType);
+        $court->setCountryIsoCode($country);
+        $court->setState($state);
+        $court->setCity($city);
+        $court->setStreet($street);
+
+        $em->persist($court);
+        $em->flush();
+
+        return true;
+    }
 }

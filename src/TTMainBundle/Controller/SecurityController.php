@@ -64,6 +64,14 @@ class SecurityController extends Controller
             return $this->redirect($this->generateUrl('login'));
         }
         $em = $this->getDoctrine()->getManager();
+
+        //setting hash
+        $hash = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 40);
+        $this->getUser()->setHash($hash);
+        $em->persist($this->getUser());
+        $em->flush();
+        //setting hash end
+
         $courts = $em->getRepository('TTMainBundle:Courts')->findBy(
             array('companyName' => $this->getUser()->getCompanyName())
         );
@@ -86,6 +94,8 @@ class SecurityController extends Controller
 
 
         return $this->render('TTMainBundle:Security:index.html.twig', array(
+                'companyName' => $this->getUser()->getCompanyName(),
+                'hash' => $hash,
                 'courts' => $courts,
                 'courtOffers' => $courtOffers,
                 'subCompanies' => $subCompanies,

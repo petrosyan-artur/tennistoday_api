@@ -43,6 +43,13 @@ class ClientUsers implements UserInterface
     private $companyName;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="hash", type="string", length=40, nullable=true)
+     */
+    private $hash;
+
+    /**
      * @ORM\Column(name="is_active", type="boolean")
      */
     private $isActive;
@@ -162,6 +169,30 @@ class ClientUsers implements UserInterface
     public function getCompanyName()
     {
         return $this->companyName;
+    }
+
+    /**
+     * Set hash
+     *
+     * @param string $hash
+     *
+     * @return ClientUsers
+     */
+    public function setHash($hash)
+    {
+        $this->hash = $hash;
+
+        return $this;
+    }
+
+    /**
+     * Get hash
+     *
+     * @return string
+     */
+    public function getHash()
+    {
+        return $this->hash;
     }
 
     public function isAccountNonExpired()

@@ -233,7 +233,7 @@ class SubCompanies
      *
      * @return SubCompanies
      */
-    public function setCoverType($phoneNumber)
+    public function setPhoneNumber($phoneNumber)
     {
         $this->phoneNumber = $phoneNumber;
 
