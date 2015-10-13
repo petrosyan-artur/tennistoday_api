@@ -3,6 +3,7 @@
  */
 var companyName = $('#companyName').text();
 var hash = $('#hash').text();
+
 $(document).ready(function(){
     $('.datetime').appendDtpicker({
         "autodateOnStart": false,
@@ -14,6 +15,118 @@ $(document).ready(function(){
     });
 });
 
+/////////// file upload ///////////
+
+$(function(){
+
+    var ul = $('#upload ul');
+
+    $('#drop a').click(function(){
+        // Simulate a click on the file input button
+        // to show the file browser dialog
+        $(this).parent().find('input').click();
+    });
+
+    // Initialize the jQuery File Upload plugin
+    $('#upload').fileupload({
+
+        // This element will accept file drag/drop uploading
+        dropZone: $('#drop'),
+
+        // This function is called when a file is added to the queue;
+        // either via the browse button, or via drag/drop:
+        add: function (e, data) {
+
+            var tpl = $('<li class="working"><input type="text" value="0" data-width="48" data-height="48"'+
+                ' data-fgColor="#0788a5" data-readOnly="1" data-bgColor="#3e4043" /><p></p><span></span></li>');
+
+            // Append the file name and file size
+            tpl.find('p').text(data.files[0].name)
+                .append('<i>' + formatFileSize(data.files[0].size) + '</i>');
+
+            // Add the HTML to the UL element
+            data.context = tpl.appendTo(ul);
+
+            // Initialize the knob plugin
+            tpl.find('input').knob();
+
+            // Listen for clicks on the cancel icon
+            tpl.find('span').click(function(){
+
+                if(tpl.hasClass('working')){
+                    jqXHR.abort();
+                }
+
+                tpl.fadeOut(function(){
+                    tpl.remove();
+                });
+
+            });
+
+            // Automatically upload the file once it is added to the queue
+            var jqXHR = data.submit();
+            updateModalImageList();
+        },
+
+        progress: function(e, data){
+
+            // Calculate the completion percentage of the upload
+            var progress = parseInt(data.loaded / data.total * 100, 10);
+
+            // Update the hidden input field and trigger a change
+            // so that the jQuery knob plugin knows to update the dial
+            data.context.find('input').val(progress).change();
+
+            if(progress == 100){
+                data.context.removeClass('working');
+            }
+        },
+
+        fail:function(e, data){
+            // Something has gone wrong!
+            data.context.addClass('error');
+        }
+
+    });
+
+
+    // Prevent the default action when a file is dropped on the window
+    $(document).on('drop dragover', function (e) {
+        e.preventDefault();
+    });
+
+    // Helper function that formats the file sizes
+    function formatFileSize(bytes) {
+        if (typeof bytes !== 'number') {
+            return '';
+        }
+
+        if (bytes >= 1000000000) {
+            return (bytes / 1000000000).toFixed(2) + ' GB';
+        }
+
+        if (bytes >= 1000000) {
+            return (bytes / 1000000).toFixed(2) + ' MB';
+        }
+
+        return (bytes / 1000).toFixed(2) + ' KB';
+    }
+
+
+    ///refreshing court images in modal
+    function updateModalImageList() {
+        setTimeout(function(){
+            var courtName = $('#court_modal_name').val();
+            console.log(courtName);
+            openCourtImagesModal(1, courtName);
+        }, 1000);
+    }
+    ///
+
+});
+
+/////////// file upload ///////////
+
 openOfferModal = function(id, name) {
     console.log(id, name);
     $('#offerCourtId').text(id);
@@ -21,9 +134,76 @@ openOfferModal = function(id, name) {
     $('#offerModal').modal({show:true});
 }
 
+var getCourtImagesList = function(name)
+{
+    $.ajax({
+        type: "POST",
+        data: {courtName: name},
+        dataType: 'json',
+        url: "/app_dev.php/request/getCourtImages",
+        success: function (res) {
+            console.log(res);
+            if (res.success == true) {
+//                var images = JSON.parse(res.images);
+//                var imgLength = images.length;
+                var data = '<table class="table">';
+                for (var i = 0; i < res.images.length; i++) {
+                    data += "<tr><td style='text-align:right;'><img src='/uploads/"+name+"/"+res.images[i]+"' class='modal_image' id='"+res.images[i].slice(0, -4)+"' onmouseover='zoomInImage(\""+res.images[i].slice(0, -4)+"\")' onmouseout='zoomOutImage(\""+res.images[i].slice(0, -4)+"\")'/></td><td style='text-align:left;'><button class='btn btn-danger btn-xs' onclick='removeImage(\""+name+"\",\""+res.images[i]+"\")'>X Remove</button></td></tr>";
+                    //Do something
+                }
+                data += "</table>";
+                $('#courtImagesBody').html(data);
+                console.log(data);
+            } else {
+                $('#courtImagesBody').html('');
+                console.log(res);
+            }
+        }
+    });
+};
+
+
+var removeImage = function(name, image)
+{
+    console.log(name, image);
+    $.ajax({
+        type: "POST",
+        data: {courtName: name, imageName: image},
+        dataType: 'json',
+        url: "/app_dev.php/request/removeCourtImage",
+        success: function (res) {
+            console.log(res);
+            if (res.success == true) {
+//                var images = JSON.parse(res.images);
+//                var imgLength = images.length;
+                var data = '<table class="table">';
+                for (var i = 0; i < res.images.length; i++) {
+                    data += "<tr><td style='text-align:right;'><img src='/uploads/"+name+"/"+res.images[i]+"' class='modal_image' id='"+res.images[i].slice(0, -4)+"' onmouseover='zoomInImage(\""+res.images[i].slice(0, -4)+"\")' onmouseout='zoomOutImage(\""+res.images[i].slice(0, -4)+"\")'/></td><td style='text-align:left;'><button class='btn btn-danger btn-xs' onclick='removeImage(\""+name+"\",\""+res.images[i]+"\")'>X Remove</button></td></tr>";
+                    //Do something
+                }
+                data += "</table>";
+                $('#courtImagesBody').html(data);
+            } else {
+                $('#courtImagesBody').html('');
+                console.log(res);
+            }
+        }
+    });
+};
+
+var zoomInImage = function(id) {
+    $('#'+id).addClass('modal_image_zoom');
+}
+
+var zoomOutImage = function(id) {
+    $('#'+id).removeClass('modal_image_zoom');
+}
+
 openCourtImagesModal = function(id, name) {
     console.log(id, name);
-    $('#courtImagesBody').text(name);
+//    $('#courtImagesBody').text(name);
+    $('#court_modal_name').val(name);
+    getCourtImagesList(name);
     $('#courtImages').modal({show:true});
 }
 
@@ -37,8 +217,16 @@ $(document).ready(function($){
         $('#stop_date').tooltip('hide');
     });
     $("#subject").on('focus', function(){
-        $('#price').removeClass("red_border");
+        $('#subject').removeClass("red_border");
         $('#subject').tooltip('hide');
+    });
+    $("#company_sub_name_s").on('focus', function(){
+        $('#company_sub_name_s').removeClass("red_border");
+        $('#company_sub_name_s').tooltip('hide');
+    });
+    $("#court_name").on('focus', function(){
+        $('#coourt_name').removeClass("red_border");
+        $('#court_name').tooltip('hide');
     });
 });
 

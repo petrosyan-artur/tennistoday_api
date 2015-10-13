@@ -293,4 +293,90 @@ class RequestController extends Controller
         return new Response($result);
     }
 
+    /**
+     * @Route("/fileUpload", name="file_upload")
+     */
+    public function fileUploadAction()
+    {
+        $request = $this->get('request');
+        $courtName = $request->get('court_modal_name');
+        $allowed = array('png', 'jpg', 'gif','zip');
+
+        if(isset($_FILES['upl']) && $_FILES['upl']['error'] == 0){
+
+            $extension = pathinfo($_FILES['upl']['name'], PATHINFO_EXTENSION);
+
+            if(!in_array(strtolower($extension), $allowed)){
+                echo '{"status":"error"}';
+                exit;
+            }
+
+            $fs = new Filesystem();
+            $dir = $this->container->getParameter('symfony_dir');
+
+            if(move_uploaded_file($_FILES['upl']['tmp_name'], $dir.'web/uploads/'.$courtName.'/'.$_FILES['upl']['name'])){
+                echo '{"status":"success"}';
+                exit;
+            }
+        }
+
+        echo '{"status":"error"}';
+    }
+
+    /**
+     * @Route("/getCourtImages", name="get_court_images")
+     */
+
+    public function getCourtImagesAction()
+    {
+        $request = $this->get('request');
+        $courtName = $request->get('courtName');
+
+        $dir = $this->container->getParameter('symfony_dir');
+
+        $files = glob($dir."web/uploads/".$courtName."/*.*");
+
+        if (!$files) {
+            $result = json_encode(array('success' => false));
+            return new Response($result);
+        }
+
+        foreach ($files as $file) {
+            $images[] = basename($file);
+        }
+
+        $result = json_encode(array('success' => true, 'images' => $images));
+        return new Response($result);
+    }
+
+    /**
+     * @Route("/removeCourtImage", name="remove_court_image")
+     */
+
+    public function removeCourtImageAction()
+    {
+        $request = $this->get('request');
+        $courtName = $request->get('courtName');
+        $imageName = $request->get('imageName');
+
+        $dir = $this->container->getParameter('symfony_dir');
+
+        if ($courtName && $imageName) {
+            $unlink = unlink($dir."web/uploads/".$courtName."/".$imageName);
+        }
+
+        $files = glob($dir."web/uploads/".$courtName."/*.*");
+
+        if (!$files) {
+            $result = json_encode(array('success' => false));
+            return new Response($result);
+        }
+
+        foreach ($files as $file) {
+            $images[] = basename($file);
+        }
+
+        $result = json_encode(array('success' => true, 'images' => $images));
+        return new Response($result);
+    }
 }

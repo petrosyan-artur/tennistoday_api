@@ -54,3 +54,30 @@
 .select_status {
     width: 100px;
 }
+
+.modal_image {
+    width: 60px;
+    -webkit-transition: all .2s ease-in-out;
+    -moz-transition: all .2s ease-in-out;
+    -o-transition: all .2s ease-in-out;
+    -ms-transition: all .2s ease-in-out;
+}
+
+.modal_image_zoom {
+    -webkit-transform: scale(6);
+    -moz-transform: scale(6);
+    -o-transform: scale(6);
+    transform: scale(6);
+}
+
+.table td {
+    text-align:center;
+    vertical-align:middle;
+    border: none;
+}
+
+.table>tbody>tr>td {
+    text-align:center;
+    vertical-align:middle;
+    border: none;
+}

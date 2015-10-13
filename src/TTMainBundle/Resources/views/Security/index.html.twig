@@ -51,8 +51,26 @@
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                     <h3>Update Court Images</h3>
                 </div>
-                <div class="modal-body">
-                    <div id="courtImagesBody">
+                <div class="modal-body" style="min-height: 400px;display:block; overflow:auto;">
+                    <div style="width:100%;position:relative;display:block;">
+                        <div style="width:50%;float:left;display:block;position:relative;padding-top:8px;" id="courtImagesBody">
+                        </div>
+                        <div style="width:50%;float:right;display:block;position:relative;">
+                            <form id="upload" method="post" action="/app_dev.php/request/fileUpload" enctype="multipart/form-data">
+                                <div id="drop">
+                                    Drop Here
+
+                                    {#<a>Browse</a>#}
+                                    <input type="file" name="upl" multiple />
+                                    <input type="hidden" value="court1" id="court_modal_name" name="court_modal_name"/>
+                                </div>
+
+                                <ul>
+                                    <!-- The file uploads will be shown here -->
+                                </ul>
+
+                            </form>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -271,7 +289,7 @@
                         <th>City</th>
                         <th>Street</th>
                         <th>Submit</th>
-                        <th>Add Images</th>
+                        {#<th>Add Images</th>#}
                     </tr>
                     </thead>
                     <tbody>
@@ -327,9 +345,9 @@
                             <td>
                                 <button class="btn btn-info" id="addNewCourt">Submit</button>
                             </td>
-                            <td>
-                                <button class="btn btn-success" onclick="openCourtImagesModal('id', 'courtName')">Edit Images</button>
-                            </td>
+                            {#<td>#}
+                                {#<button class="btn btn-success" onclick="openCourtImagesModal('id', 'courtName')">Edit Images</button>#}
+                            {#</td>#}
                         </tr>
                     </tbody>
                 </table>

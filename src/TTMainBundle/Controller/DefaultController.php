@@ -12,6 +12,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use TTMainBundle\Entity\Courts;
+use Symfony\Component\Finder\Finder;
 
 class DefaultController extends Controller
 {
@@ -38,6 +39,16 @@ class DefaultController extends Controller
      */
     public function testAction()
     {
+        $finder = new Finder();
+
+        $dir = $this->container->getParameter('symfony_dir');
+
+        $files = glob($dir."web/uploads/court1/*.*");
+        foreach ($files as $file) {
+            echo basename($file).'<br>';
+//            echo '<img src="/uploads/court1/carpet1.jpg"><br/>';
+        }
+        var_dump($files);exit;
         $startDate = '2015-09-29 17:36';
         $stopDate = '2015-09-29 18:36';
         $id = 3;
