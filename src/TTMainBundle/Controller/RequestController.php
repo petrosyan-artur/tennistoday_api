@@ -245,7 +245,7 @@ class RequestController extends Controller
         $fs = new Filesystem();
         $dir = $this->container->getParameter('symfony_dir');
         try {
-            $fs->mkdir($dir.'images/'.str_replace(' ','', $courtName));
+            $fs->mkdir($dir.'web/uploads/'.str_replace(' ','', $courtName));
         } catch (IOExceptionInterface $e) {
             $error = "An error occurred while creating your directory at ".$e->getPath();
             $result = json_encode(array('success' => false, 'reason' => $error));
