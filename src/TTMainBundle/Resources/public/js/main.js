@@ -6,9 +6,27 @@ var hash = $('#hash').text();
 
 $(document).ready(function(){
     $('.datetime').datetimepicker({
-        format:'Y-M-d h:i'
+        format:'Y-m-d H:i'
+    });
+    $('.date').datetimepicker({
+        timepicker: false,
+        format:'Y-M-d'
+    });
+    $('.time').datetimepicker({
+        datepicker: false,
+        format:'H:i',
+        step: 10
+    });
+    $(".date").on('focus', function(){
+        $('.date').removeClass("red_border");
+        $('.date').tooltip('hide');
+    });
+    $(".time").on('focus', function(){
+        $('.time').removeClass("red_border");
+        $('.time').tooltip('hide');
     });
 });
+
 //    $('.datetime').appendDtpicker({
 //        "autodateOnStart": false,
 //        "futureOnly": true
@@ -237,9 +255,17 @@ $(document).ready(function($){
 $(document).ready(function () {
     $('#addCourtOffer').click(function () {
         var id = $('#offerCourtId').text();
+        var date = $('#date').val();
         var startDate = $('#start_date').val();
         var stopDate = $('#stop_date').val();
         var price = $('#price').val();
+        if (date == '') {
+            $('#date').addClass("red_border");
+            $('#date').tooltip('show', {
+                title: "Field can't be empty!"
+            });
+            return false;
+        }
         if (startDate == '') {
             $('#start_date').addClass("red_border");
             $('#start_date').tooltip('show', {
@@ -263,12 +289,13 @@ $(document).ready(function () {
         }
         $.ajax({
             type: "POST",
-            data: {id: id, startDate: startDate, stopDate: stopDate, price: price, companyName: companyName, hash: hash},
+            data: {id: id, startDate: date+' '+startDate, stopDate: date+' '+stopDate, price: price, companyName: companyName, hash: hash},
             dataType: 'json',
             url: "/app_dev.php/request/addCourtOffer",
             success: function (res) {
                 console.log(res);
                 if (res.success == true) {
+                    $('#date').text('');
                     $('#start_date').text('');
                     $('#stop_date').text('');
                     $('#price').text('');
@@ -284,10 +311,18 @@ $(document).ready(function () {
 
 updateCourtOffer = function(id) {
 
+    var date = $('#date_'+id).val();
     var startDate = $('#start_date_'+id).val();
     var stopDate = $('#stop_date_'+id).val();
     var price = $('#price_'+id).val();
     var status = $('#status_'+id).val();
+    if (date == '') {
+        $('#date_'+id).addClass("red_border");
+        $('#date_'+id).tooltip('show', {
+            title: "Field can't be empty!"
+        });
+        return false;
+    }
     if (startDate == '') {
         $('#start_date_'+id).addClass("red_border");
         $('#start_date_'+id).tooltip('show', {
@@ -309,10 +344,10 @@ updateCourtOffer = function(id) {
         });
         return false;
     }
-    console.log(startDate, stopDate, price, status);
+    console.log(date, startDate, stopDate, price, status);
     $.ajax({
         type: "POST",
-        data: {id: id, startDate: startDate, stopDate: stopDate, price: price, status: status, companyName: companyName, hash: hash},
+        data: {id: id, startDate: date+' '+startDate, stopDate: date+' '+stopDate, price: price, status: status, companyName: companyName, hash: hash},
         dataType: 'json',
         url: "/app_dev.php/request/updateCourtOffer",
         success: function (res) {

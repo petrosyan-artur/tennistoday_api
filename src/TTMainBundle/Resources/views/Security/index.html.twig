@@ -12,6 +12,7 @@
                         <tr>
                             <td>Id</td>
                             <td>Name</td>
+                            <td>Date</td>
                             <td>Start Date</td>
                             <td>Stop Date</td>
                             <td>Price</td>
@@ -24,10 +25,13 @@
                                 <div id="offerCourtName"></div>
                             </td>
                             <td>
-                                <input id="start_date" name="start_date" class="datetime" type="text" size="15" data-toggle="tooltip" data-trigger="manual" data-placement="bottom" title="Field can't be empty!" />
+                                <input id="date" name="date" class="date" type="text" size="10" data-toggle="tooltip" data-trigger="manual" data-placement="bottom" title="Field can't be empty!" />
                             </td>
                             <td>
-                                <input id="stop_date" name="stop_date" class="datetime" type="text" size="15" data-toggle="tooltip" data-trigger="manual" data-placement="bottom" title="Field can't be empty!" />
+                                <input id="start_date" name="start_date" class="time" type="text" size="5" data-toggle="tooltip" data-trigger="manual" data-placement="bottom" title="Field can't be empty!" />
+                            </td>
+                            <td>
+                                <input id="stop_date" name="stop_date" class="time" type="text" size="5" data-toggle="tooltip" data-trigger="manual" data-placement="bottom" title="Field can't be empty!" />
                             </td>
                             <td>
                                 <input id="price" name="price" type="text" size="5" data-toggle="tooltip" data-trigger="manual" data-placement="bottom" title="Field can't be empty!" />
@@ -144,9 +148,9 @@
                         {#<th>Country</th>#}
                         {#<th>State</th>#}
                         {#<th>City</th>#}
-                        {#<th>Street</th>#}
-                        <th>Start Date</th>
-                        <th>Stop Date</th>
+                        <th>Date</th>
+                        <th>Start Time</th>
+                        <th>Stop Time</th>
                         <th>Price</th>
                         <th>Current Status</th>
                         <th>Change Status</th>
@@ -167,12 +171,16 @@
                             {#<td>{{ c.getCity() }}</td>#}
                             {#<td>{{ c.getStreet() }}</td>#}
                             <td>
-                                <span style="display:none;">{{ c.getStartDate()|date('Y-m-d h:m') }}</span>
-                                <input type="text" size="15" class="datetime" id="start_date_{{ c.getId() }}" value="{{ c.getStartDate()|date('Y-m-d h:m') }}" data-toggle="tooltip" data-trigger="manual" data-placement="bottom" title="Field can't be empty!">
+                                <span style="display:none;">{{ c.getStartDate|date('Y-m-d') }}</span>
+                                <input type="text" size="8" class="date" id="date_{{ c.getId() }}" value="{{ c.getStartDate()|date('Y-M-d') }}" data-toggle="tooltip" data-trigger="manual" data-placement="bottom" title="Field can't be empty!">
                             </td>
                             <td>
-                                <span style="display:none;">{{ c.getStopDate()|date('Y-m-d h:m') }}</span>
-                                <input type="text" size="15" class="datetime" id="stop_date_{{ c.getId() }}" value="{{ c.getStopDate()|date('Y-m-d h:m') }}" data-toggle="tooltip" data-trigger="manual" data-placement="bottom" title="Field can't be empty!">
+                                <span style="display:none;">{{ c.getStartDate|date('H:i') }}</span>
+                                <input type="text" size="3" class="time" id="start_date_{{ c.getId() }}" value="{{ c.getStartDate()|date('H:i') }}" data-toggle="tooltip" data-trigger="manual" data-placement="bottom" title="Field can't be empty!">
+                            </td>
+                            <td>
+                                <span style="display:none;">{{ c.getStopDate|date('H:i') }}</span>
+                                <input type="text" size="3" class="time" id="stop_date_{{ c.getId() }}" value="{{ c.getStopDate()|date('H:i') }}" data-toggle="tooltip" data-trigger="manual" data-placement="bottom" title="Field can't be empty!">
                             </td>
                             <td>
                                 <span style="display:none;">{{ c.getPrice() }}</span>
