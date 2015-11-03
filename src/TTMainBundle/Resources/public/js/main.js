@@ -5,15 +5,19 @@ var companyName = $('#companyName').text();
 var hash = $('#hash').text();
 
 $(document).ready(function(){
-    $('.datetime').appendDtpicker({
-        "autodateOnStart": false,
-        "futureOnly": true
-    });
-    $(".datetime").on('focus', function(){
-        $('#start_date').removeClass("red_border");
-        $('#start_date').tooltip('hide');
+    $('.datetime').datetimepicker({
+        format:'Y-M-d h:i'
     });
 });
+//    $('.datetime').appendDtpicker({
+//        "autodateOnStart": false,
+//        "futureOnly": true
+//    });
+//    $(".datetime").on('focus', function(){
+//        $('#start_date').removeClass("red_border");
+//        $('#start_date').tooltip('hide');
+//    });
+//});
 
 /////////// file upload ///////////
 
@@ -116,9 +120,9 @@ $(function(){
     ///refreshing court images in modal
     function updateModalImageList() {
         setTimeout(function(){
-            var courtName = $('#court_modal_name').val();
-            console.log(courtName);
-            openCourtImagesModal(1, courtName);
+            var subCompName = $('#subComp_modal_name').val();
+            console.log(subCompName);
+            openSubCompImagesModal(1, subCompName);
         }, 1000);
     }
     ///
@@ -134,28 +138,27 @@ openOfferModal = function(id, name) {
     $('#offerModal').modal({show:true});
 }
 
-var getCourtImagesList = function(name)
+var getSubCompImagesList = function(name)
 {
     $.ajax({
         type: "POST",
-        data: {courtName: name},
+        data: {subCompName: name},
         dataType: 'json',
-        url: "/app_dev.php/request/getCourtImages",
+        url: "/app_dev.php/request/getSubCompImages",
         success: function (res) {
             console.log(res);
+            name = name.replace(/\s+/g, '');
             if (res.success == true) {
-//                var images = JSON.parse(res.images);
-//                var imgLength = images.length;
-                var data = '<table class="table">';
+                var data = '<table class="table modal_table">';
                 for (var i = 0; i < res.images.length; i++) {
                     data += "<tr><td style='text-align:right;'><img src='/uploads/"+name+"/"+res.images[i]+"' class='modal_image' id='"+res.images[i].slice(0, -4)+"' onmouseover='zoomInImage(\""+res.images[i].slice(0, -4)+"\")' onmouseout='zoomOutImage(\""+res.images[i].slice(0, -4)+"\")'/></td><td style='text-align:left;'><button class='btn btn-danger btn-xs' onclick='removeImage(\""+name+"\",\""+res.images[i]+"\")'>X Remove</button></td></tr>";
                     //Do something
                 }
                 data += "</table>";
-                $('#courtImagesBody').html(data);
+                $('#subCompanyImagesBody').html(data);
                 console.log(data);
             } else {
-                $('#courtImagesBody').html('');
+                $('#subCompanyImagesBody').html('');
                 console.log(res);
             }
         }
@@ -165,12 +168,13 @@ var getCourtImagesList = function(name)
 
 var removeImage = function(name, image)
 {
+    name = name.replace(/\s+/g, '');
     console.log(name, image);
     $.ajax({
         type: "POST",
-        data: {courtName: name, imageName: image},
+        data: {subCompName: name, imageName: image},
         dataType: 'json',
-        url: "/app_dev.php/request/removeCourtImage",
+        url: "/app_dev.php/request/removeSubCompImage",
         success: function (res) {
             console.log(res);
             if (res.success == true) {
@@ -182,9 +186,9 @@ var removeImage = function(name, image)
                     //Do something
                 }
                 data += "</table>";
-                $('#courtImagesBody').html(data);
+                $('#subCompanyImagesBody').html(data);
             } else {
-                $('#courtImagesBody').html('');
+                $('#subCompanyImagesBody').html('');
                 console.log(res);
             }
         }
@@ -199,13 +203,13 @@ var zoomOutImage = function(id) {
     $('#'+id).removeClass('modal_image_zoom');
 }
 
-openCourtImagesModal = function(id, name) {
+openSubCompImagesModal = function(id, name) {
     console.log(id, name);
 //    $('#courtImagesBody').text(name);
-    $('#court_modal_name').val(name);
-    getCourtImagesList(name);
-    $('#courtImages').modal({show:true});
-}
+    $('#subComp_modal_name').val(name);
+    getSubCompImagesList(name);
+    $('#subCompImages').modal({show:true});
+};
 
 $(document).ready(function($){
     $("#stop_date").on('focus', function(){
@@ -314,6 +318,7 @@ updateCourtOffer = function(id) {
         success: function (res) {
             console.log(res);
             if (res.success == true) {
+                $('#current_status_'+id).html(status);
                 alert('The offer has been updated successfully!');
             } else {
                 alert(res.reason);
@@ -416,7 +421,7 @@ $('#addNewSubCompany').click(function () {
     var city = $('#city_s').val();
     var street = $('#street_s').val();
     var phoneNumber = $('#phone_number').val();
-
+    console.log(companySubName, country, state, city, street, phoneNumber);
     if (companySubName == '') {
         $('#company_sub_name_s').addClass("red_border");
         $('#company_sub_name_s').tooltip('show', {
@@ -473,6 +478,60 @@ $('#addNewSubCompany').click(function () {
         }
     });
 });
+
+updateSubComp = function(id) {
+
+    var companySubName = $('#sub_company_sub_name_'+id).val();
+    var country = $('#sub_country_'+id).val();
+    var state = $('#sub_state_'+id).val();
+    var city = $('#sub_city_'+id).val();
+    var street = $('#sub_street_'+id).val();
+    var phoneNumber = $('#sub_phone_number_'+id).val();
+    if (state == '') {
+        $('#sub_state_'+id).addClass("red_border");
+        $('#sub_state_'+id).tooltip('show', {
+            title: "Field can't be empty!"
+        });
+        return false;
+    }
+    if (city == '') {
+        $('#sub_city_'+id).addClass("red_border");
+        $('#sub_city_'+id).tooltip('show', {
+            title: "Field can't be empty!"
+        });
+        return false;
+    }
+    if (street == '') {
+        $('#sub_street_'+id).addClass("red_border");
+        $('#sub_street_'+id).tooltip('show', {
+            title: "Field can't be empty!"
+        });
+        return false;
+    }
+    if (phoneNumber == '') {
+        $('#sub_phone_number_'+id).addClass("red_border");
+        $('#sub_phone_number_'+id).tooltip('show', {
+            title: "Field can't be empty!"
+        });
+        return false;
+    }
+    console.log(id, companySubName, country, state, city, street, phoneNumber);
+
+    $.ajax({
+        type: "POST",
+        data: {id: id, companySubName: companySubName, country: country, state: state, city: city, street: street, companyName: companyName, phoneNumber: phoneNumber, hash: hash},
+        dataType: 'json',
+        url: "/app_dev.php/request/updateSubCompany",
+        success: function (res) {
+            console.log(res);
+            if (res.success == true) {
+                alert('SubCompany has been updated successfully!');
+            } else {
+                alert(res.reason);
+            }
+        }
+    });
+};
 
 $(function(){
     $('#keywords').tablesorter();

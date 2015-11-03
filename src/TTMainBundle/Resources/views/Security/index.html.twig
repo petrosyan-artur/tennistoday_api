@@ -24,10 +24,10 @@
                                 <div id="offerCourtName"></div>
                             </td>
                             <td>
-                                <input id="start_date" name="start_date" class="datetime" type="text" size="13" data-toggle="tooltip" data-trigger="manual" data-placement="bottom" title="Field can't be empty!" />
+                                <input id="start_date" name="start_date" class="datetime" type="text" size="15" data-toggle="tooltip" data-trigger="manual" data-placement="bottom" title="Field can't be empty!" />
                             </td>
                             <td>
-                                <input id="stop_date" name="stop_date" class="datetime" type="text" size="13" data-toggle="tooltip" data-trigger="manual" data-placement="bottom" title="Field can't be empty!" />
+                                <input id="stop_date" name="stop_date" class="datetime" type="text" size="15" data-toggle="tooltip" data-trigger="manual" data-placement="bottom" title="Field can't be empty!" />
                             </td>
                             <td>
                                 <input id="price" name="price" type="text" size="5" data-toggle="tooltip" data-trigger="manual" data-placement="bottom" title="Field can't be empty!" />
@@ -44,16 +44,16 @@
             </div>
         </div>
     </div>
-    <div class="modal in" id="courtImages" role="dialog" tabindex="-1" aria-hidden="false" style="display: none">
+    <div class="modal in" id="subCompImages" role="dialog" tabindex="-1" aria-hidden="false" style="display: none">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h3>Update Court Images</h3>
+                    <h3>Update SubCompany Images</h3>
                 </div>
                 <div class="modal-body" style="min-height: 400px;display:block; overflow:auto;">
                     <div style="width:100%;position:relative;display:block;">
-                        <div style="width:50%;float:left;display:block;position:relative;padding-top:8px;" id="courtImagesBody">
+                        <div style="width:50%;float:left;display:block;position:relative;padding-top:8px;" id="subCompanyImagesBody">
                         </div>
                         <div style="width:50%;float:right;display:block;position:relative;">
                             <form id="upload" method="post" action="/app_dev.php/request/fileUpload" enctype="multipart/form-data">
@@ -62,7 +62,7 @@
 
                                     {#<a>Browse</a>#}
                                     <input type="file" name="upl" multiple />
-                                    <input type="hidden" value="court1" id="court_modal_name" name="court_modal_name"/>
+                                    <input type="hidden" value="court1" id="subComp_modal_name" name="subComp_modal_name"/>
                                 </div>
 
                                 <ul>
@@ -148,7 +148,8 @@
                         <th>Start Date</th>
                         <th>Stop Date</th>
                         <th>Price</th>
-                        <th>Status</th>
+                        <th>Current Status</th>
+                        <th>Change Status</th>
                         <th>Update</th>
                     </tr>
                     </thead>
@@ -167,24 +168,30 @@
                             {#<td>{{ c.getStreet() }}</td>#}
                             <td>
                                 <span style="display:none;">{{ c.getStartDate()|date('Y-m-d h:m') }}</span>
-                                <input type="text" size="13" class="datetime" id="start_date_{{ c.getId() }}" value="{{ c.getStartDate()|date('Y-m-d h:m') }}" data-toggle="tooltip" data-trigger="manual" data-placement="bottom" title="Field can't be empty!">
+                                <input type="text" size="15" class="datetime" id="start_date_{{ c.getId() }}" value="{{ c.getStartDate()|date('Y-m-d h:m') }}" data-toggle="tooltip" data-trigger="manual" data-placement="bottom" title="Field can't be empty!">
                             </td>
                             <td>
                                 <span style="display:none;">{{ c.getStopDate()|date('Y-m-d h:m') }}</span>
-                                <input type="text" size="13" class="datetime" id="stop_date_{{ c.getId() }}" value="{{ c.getStopDate()|date('Y-m-d h:m') }}" data-toggle="tooltip" data-trigger="manual" data-placement="bottom" title="Field can't be empty!">
+                                <input type="text" size="15" class="datetime" id="stop_date_{{ c.getId() }}" value="{{ c.getStopDate()|date('Y-m-d h:m') }}" data-toggle="tooltip" data-trigger="manual" data-placement="bottom" title="Field can't be empty!">
                             </td>
                             <td>
                                 <span style="display:none;">{{ c.getPrice() }}</span>
                                 <input type="text" size="5" id="price_{{ c.getId() }}" value="{{ c.getPrice() }}" data-toggle="tooltip" data-trigger="manual" data-placement="bottom" title="Field can't be empty!">
                             </td>
                             <td>
-                                <span style="display:none;">{{ c.getStatus() }}</span>
+                                <span id="current_status_{{ c.getId() }}">{{ c.getStatus() }}</span>
+                                {#<select name="court_status_{{ c.getId() }}" id="status_{{ c.getId() }}" class="select_status">#}
+                                    {#{% for sl in statusList %}#}
+                                    {#<option value="{{ sl['name'] }}"#}
+                                    {#{%  if sl['name'] == c.getStatus() %}selected="selected"{% endif %} {%  if ((sl['name'] == 'outdated') or (sl['name'] == 'booked') or (sl['name'] == 'completed') or (c.getStatus() == 'outdated') or (c.getStatus() == 'booked') or (c.getStatus() == 'completed')) %} disabled{% endif %}>{{ sl['name'] }}#}
+                                    {#</option>#}
+                                    {#{% endfor %}#}
+                                {#</select>#}
+                            </td>
+                            <td>
                                 <select name="court_status_{{ c.getId() }}" id="status_{{ c.getId() }}" class="select_status">
-                                    {% for sl in statusList %}
-                                    <option value="{{ sl['name'] }}"
-                                    {%  if sl['name'] == c.getStatus() %}selected="selected"{% endif %}>{{ sl['name'] }}
-                                    </option>
-                                    {% endfor %}
+                                    <option value="active">active</option>
+                                    <option value="inactive">inactive</option>
                                 </select>
                             </td>
                             <td>
@@ -214,7 +221,6 @@
                         <th>City</th>
                         <th>Street</th>
                         <th>Update</th>
-                        <th>Edit Images</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -268,9 +274,6 @@
                             </td>
                             <td>
                                 <button class="btn btn-info" onclick="updateCourts({{ c.getId() }})">Update</button>
-                            </td>
-                            <td>
-                                <button class="btn btn-success" onclick="openCourtImagesModal('{{ c.getId() }}', '{{ c.getCourtName() }}')">Edit Images</button>
                             </td>
                         </tr>
                     {% endfor %}
@@ -351,53 +354,105 @@
                         </tr>
                     </tbody>
                 </table>
-                <h3>Add New SubCompany</h3>
-                <table class="table table-striped table-bordered table-hover table-condensed">
-                    <thead>
-                    <tr>
-                        <th>Company Sub Name</th>
-                        <th>Country</th>
-                        <th>State</th>
-                        <th>City</th>
-                        <th>Street</th>
-                        <th>Phone Number</th>
-                        <th>Submit</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>
-                            <input type="text" size="15" id="company_sub_name_s" placeholder="SubCompany Name" value="" data-toggle="tooltip" data-trigger="manual" data-placement="bottom" title="Field can't be empty!">
-                        </td>
-                        <td>
-                            <select name="country_iso_code_s" id="country_iso_code_s" style="width:50px;">
-                                {% for st in countryIsoCode %}
-                                    <option value="{{ st['name'] }}">
-                                        {{ st['name'] }}
-                                    </option>
-                                {% endfor %}
-                            </select>
-                        </td>
-                        <td>
-                            <input type="text" size="6" id="state_s" placeholder="State" value="" data-toggle="tooltip" data-trigger="manual" data-placement="bottom" title="Field can't be empty!">
-                        </td>
-                        <td>
-                            <input type="text" size="6" id="city_s" placeholder="City" value="" data-toggle="tooltip" data-trigger="manual" data-placement="bottom" title="Field can't be empty!">
-                        </td>
-                        <td>
-                            <input type="text" size="15" id="street_s" placeholder="Street" value="" data-toggle="tooltip" data-trigger="manual" data-placement="bottom" title="Field can't be empty!">
-                        </td>
-                        <td>
-                            <input type="text" size="15" id="phone_number" placeholder="Phone Number" value="" data-toggle="tooltip" data-trigger="manual" data-placement="bottom" title="Field can't be empty!">
-                        </td>
-                        <td>
-                            <button class="btn btn-info" id="addNewSubCompany">Submit</button>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
             </div>
         </div>
+    </div>
+    <div class="edit-courts-subComps" id="edit-subComps">
+    <div class="row">
+        <div class="container">
+            <h1>Add/Edit SubCompanies</h1>
+            <h3>Edit SubCompanies</h3>
+            <table class="table table-striped table-bordered table-hover table-condensed">
+                <thead>
+                <tr>
+                    <th>Company Sub Name</th>
+                    <th>Country</th>
+                    <th>State</th>
+                    <th>City</th>
+                    <th>Street</th>
+                    <th>Phone Number</th>
+                    <th>Update</th>
+                    <th>Edit Images</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for sub in subCompanies %}
+                    <tr>
+                        <td>
+                            <input type="text" size="16" id="sub_company_sub_name_{{ sub.getId() }}" value="{{ sub.getCompanySubName() }}" data-toggle="tooltip" data-trigger="manual" data-placement="bottom" readonly title="Field can't be empty!">
+                        </td>
+                        <td>
+                            <input type="text" size="3" id="sub_country_{{ sub.getId() }}" value="{{ sub.getCountryIsoCode() }}" data-toggle="tooltip" data-trigger="manual" data-placement="bottom" readonly title="Field can't be empty!">
+                        </td>
+                        <td>
+                            <input type="text" size="8" id="sub_state_{{ sub.getId() }}" value="{{ sub.getState() }}" data-toggle="tooltip" data-trigger="manual" data-placement="bottom" readonly title="Field can't be empty!">
+                        </td>
+                        <td>
+                            <input type="text" size="8" id="sub_city_{{ sub.getId() }}" value="{{ sub.getCity() }}" data-toggle="tooltip" data-trigger="manual" data-placement="bottom" title="Field can't be empty!">
+                        </td>
+                        <td>
+                            <input type="text" size="18" id="sub_street_{{ sub.getId() }}" value="{{ sub.getStreet() }}" data-toggle="tooltip" data-trigger="manual" data-placement="bottom" title="Field can't be empty!">
+                        </td>
+                        <td>
+                            <input type="text" size="15" id="sub_phone_number_{{ sub.getId() }}" value="{{ sub.getPhoneNumber() }}" data-toggle="tooltip" data-trigger="manual" data-placement="bottom" title="Field can't be empty!">
+                        </td>
+                        <td>
+                            <button class="btn btn-info" onclick="updateSubComp({{ sub.getId() }})">Update</button>
+                        </td>
+                        <td>
+                            <button class="btn btn-success" onclick="openSubCompImagesModal('{{ sub.getId() }}', '{{ sub.getCompanySubName() }}')">Edit Images</button>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <h3>Add New SubCompany</h3>
+            <table class="table table-striped table-bordered table-hover table-condensed">
+                <thead>
+                <tr>
+                    <th>Company Sub Name</th>
+                    <th>Country</th>
+                    <th>State</th>
+                    <th>City</th>
+                    <th>Street</th>
+                    <th>Phone Number</th>
+                    <th>Submit</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>
+                        <input type="text" size="15" id="company_sub_name_s" placeholder="SubCompany Name" value="" data-toggle="tooltip" data-trigger="manual" data-placement="bottom" title="Field can't be empty!">
+                    </td>
+                    <td>
+                        <select name="country_iso_code_s" id="country_iso_code_s" style="width:50px;">
+                            {% for st in countryIsoCode %}
+                                <option value="{{ st['name'] }}">
+                                    {{ st['name'] }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td>
+                        <input type="text" size="6" id="state_s" placeholder="State" value="" data-toggle="tooltip" data-trigger="manual" data-placement="bottom" title="Field can't be empty!">
+                    </td>
+                    <td>
+                        <input type="text" size="6" id="city_s" placeholder="City" value="" data-toggle="tooltip" data-trigger="manual" data-placement="bottom" title="Field can't be empty!">
+                    </td>
+                    <td>
+                        <input type="text" size="15" id="street_s" placeholder="Street" value="" data-toggle="tooltip" data-trigger="manual" data-placement="bottom" title="Field can't be empty!">
+                    </td>
+                    <td>
+                        <input type="text" size="15" id="phone_number" placeholder="Phone Number" value="" data-toggle="tooltip" data-trigger="manual" data-placement="bottom" title="Field can't be empty!">
+                    </td>
+                    <td>
+                        <button class="btn btn-info" id="addNewSubCompany">Submit</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
     </div>
     <div class="billing-section" id="billing">
         <div class="row">

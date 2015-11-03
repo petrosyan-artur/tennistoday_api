@@ -43,4 +43,26 @@ class SubCompaniesRepository extends EntityRepository
 
         return true;
     }
+
+    public function updateSubCompany($id, $companySubName, $countryIsoCode, $state, $city, $street, $phoneNumber)
+    {
+        $em = $this->getEntityManager();
+        $co = $em->getRepository('TTMainBundle:SubCompanies')->findOneById($id);
+
+        if (!$co) {
+            return false;
+        }
+
+        $co->setCompanySubName($companySubName);
+        $co->setCountryIsoCode($countryIsoCode);
+        $co->setState($state);
+        $co->setCity($city);
+        $co->setStreet($street);
+        $co->setPhoneNumber($phoneNumber);
+
+        $em->persist($co);
+        $em->flush();
+
+        return true;
+    }
 }

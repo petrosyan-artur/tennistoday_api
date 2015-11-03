@@ -93,14 +93,14 @@ class RequestController extends Controller
             return new Response($result);
         }
 
-        if (!$id or !$startDate or !$stopDate or !$price ) {
+        if (!$id or !$startDate or !$stopDate or !$price or !$status) {
             $result = json_encode(array('success' => false, 'reason' => 'Fields are empty!'));
             return new Response($result);
         }
         $start = strtotime($startDate);
         $stop = strtotime($stopDate);
 
-        if ((($stop - $start)/60 > 300) || (($stop - $start) <= 0)) {
+        if (((($stop - $start)/60 > 300) || (($stop - $start) <= 0)) && $status=='active') {
             $result = json_encode(array('success' => false, 'reason' => 'Invalid dates difference!'));
             return new Response($result);
         }
@@ -242,15 +242,15 @@ class RequestController extends Controller
             return new Response($result);
         }
 
-        $fs = new Filesystem();
-        $dir = $this->container->getParameter('symfony_dir');
-        try {
-            $fs->mkdir($dir.'web/uploads/'.str_replace(' ','', $courtName));
-        } catch (IOExceptionInterface $e) {
-            $error = "An error occurred while creating your directory at ".$e->getPath();
-            $result = json_encode(array('success' => false, 'reason' => $error));
-            return new Response($result);
-        }
+//        $fs = new Filesystem();
+//        $dir = $this->container->getParameter('symfony_dir');
+//        try {
+//            $fs->mkdir($dir.'web/uploads/'.str_replace(' ','', $courtName));
+//        } catch (IOExceptionInterface $e) {
+//            $error = "An error occurred while creating your directory at ".$e->getPath();
+//            $result = json_encode(array('success' => false, 'reason' => $error));
+//            return new Response($result);
+//        }
 
         $result = json_encode(array('success' => true));
         return new Response($result);
@@ -289,6 +289,55 @@ class RequestController extends Controller
             $result = json_encode(array('success' => false, 'reason' => 'SubCompany with such name already exists!'));
             return new Response($result);
         }
+
+        $fs = new Filesystem();
+        $dir = $this->container->getParameter('symfony_dir');
+        try {
+            $fs->mkdir($dir.'web/uploads/'.str_replace(' ','', $companySubName));
+        } catch (IOExceptionInterface $e) {
+            $error = "An error occurred while creating your directory at ".$e->getPath();
+            $result = json_encode(array('success' => false, 'reason' => $error));
+            return new Response($result);
+        }
+
+        $result = json_encode(array('success' => true));
+        return new Response($result);
+    }
+
+    /**
+     * @Route("/updateSubCompany", name="update_sub_company")
+     */
+    public function updateSubCompanyAction()
+    {
+        $request = $this->get('request');
+        $id = $request->get('id');
+        $companySubName = $request->get('companySubName');
+        $country = $request->get('country');
+        $state = $request->get('state');
+        $city = $request->get('city');
+        $street = $request->get('street');
+        $phoneNumber = $request->get('phoneNumber');
+
+        $hash = $request->get('hash');
+        $companyName = $request->get('companyName');
+
+        if (!$this->checkHash($companyName, $hash)) {
+            $result = json_encode(array('success' => false, 'reason' => 'Invalid hash! '.$hash.' - '.$companyName));
+            return new Response($result);
+        }
+
+        if (!$id or !$companySubName or !$country or !$state or !$city or !$street or !$phoneNumber) {
+            $result = json_encode(array('success' => false, 'reason' => 'Fields are empty!'));
+            return new Response($result);
+        }
+
+        $em = $this->getDoctrine()->getManager();
+
+        $updateSubComp = $em->getRepository('TTMainBundle:SubCompanies')->updateSubCompany($id, $companySubName, $country, $state, $city, $street, $phoneNumber);
+        if (!$updateSubComp) {
+            $result = json_encode(array('success' => false, 'reason' => 'Backend Problems!'));
+            return new Response($result);
+        }
         $result = json_encode(array('success' => true));
         return new Response($result);
     }
@@ -299,7 +348,7 @@ class RequestController extends Controller
     public function fileUploadAction()
     {
         $request = $this->get('request');
-        $courtName = $request->get('court_modal_name');
+        $subComp = $request->get('subComp_modal_name');
         $allowed = array('png', 'jpg', 'gif','zip');
 
         if(isset($_FILES['upl']) && $_FILES['upl']['error'] == 0){
@@ -314,7 +363,7 @@ class RequestController extends Controller
             $fs = new Filesystem();
             $dir = $this->container->getParameter('symfony_dir');
 
-            if(move_uploaded_file($_FILES['upl']['tmp_name'], $dir.'web/uploads/'.$courtName.'/'.$_FILES['upl']['name'])){
+            if(move_uploaded_file($_FILES['upl']['tmp_name'], $dir.'web/uploads/'.str_replace(' ','', $subComp).'/'.$_FILES['upl']['name'])){
                 echo '{"status":"success"}';
                 exit;
             }
@@ -324,17 +373,17 @@ class RequestController extends Controller
     }
 
     /**
-     * @Route("/getCourtImages", name="get_court_images")
+     * @Route("/getSubCompImages", name="get_sub_comp_images")
      */
 
-    public function getCourtImagesAction()
+    public function getSubCompImagesAction()
     {
         $request = $this->get('request');
-        $courtName = $request->get('courtName');
+        $subCompName = $request->get('subCompName');
 
         $dir = $this->container->getParameter('symfony_dir');
 
-        $files = glob($dir."web/uploads/".$courtName."/*.*");
+        $files = glob($dir."web/uploads/".str_replace(' ','', $subCompName)."/*.*");
 
         if (!$files) {
             $result = json_encode(array('success' => false));
@@ -350,22 +399,23 @@ class RequestController extends Controller
     }
 
     /**
-     * @Route("/removeCourtImage", name="remove_court_image")
+     * @Route("/removeSubCompImage", name="remove_sub_comp_image")
      */
 
-    public function removeCourtImageAction()
+    public function removeSubCompImageAction()
     {
         $request = $this->get('request');
-        $courtName = $request->get('courtName');
+        $subCompName = $request->get('subCompName');
+        $subCompName = str_replace(' ','', $subCompName);
         $imageName = $request->get('imageName');
 
         $dir = $this->container->getParameter('symfony_dir');
 
-        if ($courtName && $imageName) {
-            $unlink = unlink($dir."web/uploads/".$courtName."/".$imageName);
+        if ($subCompName && $imageName) {
+            $unlink = unlink($dir."web/uploads/".$subCompName."/".$imageName);
         }
 
-        $files = glob($dir."web/uploads/".$courtName."/*.*");
+        $files = glob($dir."web/uploads/".$subCompName."/*.*");
 
         if (!$files) {
             $result = json_encode(array('success' => false));
