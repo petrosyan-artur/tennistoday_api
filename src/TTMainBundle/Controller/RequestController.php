@@ -133,10 +133,10 @@ class RequestController extends Controller
         $hash = $request->get('hash');
         $companyName = $request->get('companyName');
 
-        if (!$this->checkHash($companyName, $hash)) {
-            $result = json_encode(array('success' => false, 'reason' => 'Invalid hash! '.$hash.' - '.$companyName));
-            return new Response($result);
-        }
+//        if (!$this->checkHash($companyName, $hash)) {
+//            $result = json_encode(array('success' => false, 'reason' => 'Invalid hash! '.$hash.' - '.$companyName));
+//            return new Response($result);
+//        }
 
         if (!$username or !$password or !$companyName) {
             $result = json_encode(array('success' => false, 'reason' => 'Fields are empty!'));
