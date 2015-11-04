@@ -309,7 +309,7 @@ $(document).ready(function () {
     });
 });
 
-updateCourtOffer = function(id) {
+updateCourtOffer = function(id, isAlert) {
 
     var date = $('#date_'+id).val();
     var startDate = $('#start_date_'+id).val();
@@ -354,12 +354,35 @@ updateCourtOffer = function(id) {
             console.log(res);
             if (res.success == true) {
                 $('#current_status_'+id).html(status);
-                alert('The offer has been updated successfully!');
+                if (isAlert == 'yes' ) {
+                    alert('The offer has been updated successfully!');
+                }
             } else {
                 alert(res.reason);
             }
         }
     });
+};
+
+updateAllCourtOffers = function(count) {
+    var id = null;
+    var date = null;
+    var stopDate = null;
+    var sumDate = null;
+    var current_date = new Date();
+    console.log(current_date);
+//    return;
+    for (var i = 1; i < count + 1; i++) {
+        date = $('#date_'+id).val();
+        stopDate = $('#stop_date_'+id).val();
+        sumDate = new Date(date + ' ' + stopDate);
+        id = $('#offer_id_'+i).val();
+        if (current_date < sumDate) {
+            updateCourtOffer(id, 'no');
+            console.log(i, id);
+        }
+    }
+    alert('The offers have been updated successfully!')
 };
 
 updateCourts = function(id) {

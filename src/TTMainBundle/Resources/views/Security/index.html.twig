@@ -160,7 +160,7 @@
                     <tbody>
                     {% for c in courtOffers %}
                         <tr>
-                            <td>{{ c.getId() }}</td>
+                            <td>{{ c.getId() }}<input type="hidden" id="offer_id_{{ loop.index }}" value="{{ c.getId() }}"></td>
                             {#<td style="text-align:center">{{ c.getCompanyName() }}</td>#}
                             <td>{{ c.getCompanySubName() }}</td>
                             <td>{{ c.getCourtName() }}</td>
@@ -203,12 +203,13 @@
                                 </select>
                             </td>
                             <td>
-                                <button class="btn btn-info" onclick="updateCourtOffer({{ c.getId() }})">Update</button>
+                                <button class="btn btn-info" onclick="updateCourtOffer({{ c.getId() }}, 'yes')">Update</button>
                             </td>
                         </tr>
                     {% endfor %}
                     </tbody>
                 </table>
+                <div style="float:right;margin-right:10px;"><button class="btn btn-info" onclick="updateAllCourtOffers({{ courtOffersCount }})">Update All</button></div>
             </div>
         </div>
     </div>

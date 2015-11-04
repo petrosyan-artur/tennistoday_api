@@ -79,6 +79,7 @@ class SecurityController extends Controller
             array('companyName' => $this->getUser()->getCompanyName()),
             array('startDate' => 'DESC')
         );
+        $courtOffersCount = count($courtOffers);
         $subCompanies = $em->getRepository('TTMainBundle:SubCompanies')->findBy(
             array('companyName' => $this->getUser()->getCompanyName())
         );
@@ -98,6 +99,7 @@ class SecurityController extends Controller
                 'hash' => $hash,
                 'courts' => $courts,
                 'courtOffers' => $courtOffers,
+                'courtOffersCount' => $courtOffersCount,
                 'subCompanies' => $subCompanies,
                 'subComps' => $subComps,
                 'statusList' => $statusList,
